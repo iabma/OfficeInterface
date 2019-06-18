@@ -1,0 +1,2 @@
+bin\Debug\OfficeAppManifests\InterfaceManifest.xml
+C:\Users\Ian Balaguera\source\repos\Interface\Interface\bin\Debug\Interface.debugapp

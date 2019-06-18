@@ -1,0 +1,80 @@
+﻿body {
+    font-family: 'Lato', sans-serif;
+}
+
+#content-header {
+    background: #E54444;
+    color: #fff;
+    font-size: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 20px);
+    height: 50px;
+    overflow: hidden;
+    padding: 0px 10px;
+}
+
+#content-main {
+    background: white;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    padding: 10px;
+}
+
+#scan {
+    margin-left: calc(37.5vw - 10px);
+    width: 25vw;
+    height: 25vw;
+    border-radius: 30px;
+    outline: none;
+    border: 2px solid #E54444;
+    border-color: #E54444;
+    background-color: white;
+    color: #E54444;
+    font-size: 15px;
+    transition: .2s;
+}
+
+#scan:hover {
+    color: white;
+    background-color: #E54444;
+    border: 0px;
+}
+
+#suggestions {
+    display: block;
+    width: 100%;
+    margin: 10px 0px;
+    background-color: white;
+    border: 1px solid gray;
+    border-radius: 3px;
+}
+
+.suggestion {
+    margin: 5px;
+    background-color: #E54444;
+    width: calc(100% - 10px);
+    border-radius: 3px;
+    height: 30px;
+    -ms-user-select: none;
+    cursor: default;
+    color: white;
+    transition: .2s;
+}
+
+    .suggestion span {
+        font-size: 14px;
+        margin: 5px;
+        margin-top: calc(50% - 7px);
+    }
+
+    .suggestion:hover {
+        background-color: white;
+        color: #E54444;
+        height: 40px;
+    }

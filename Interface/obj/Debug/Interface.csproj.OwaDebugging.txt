@@ -1,0 +1,7 @@
+False
+1b6f1a37-c169-48c0-b5fe-3e4d8f5f1c874c37bc05-e34a-4b27-8cd7-f56239e870c6
+{a38932d5-94c9-46a3-a491-d83230f9bf1c}{1797655f-5fa0-4404-bdf1-417f5a0bc56c}
+{4d96ad9a-f16d-4fac-b127-e2d4605d923e}
+1.0.0.0
+Interface
+_layouts/15/
