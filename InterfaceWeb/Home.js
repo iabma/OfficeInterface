@@ -1,6 +1,6 @@
 ﻿(function () {
-    var content = "";
-    console.log("yo")
+    var content = "",
+        id = 0;
 
     Office.onReady(function () {
         $(document).ready(function () {
@@ -26,19 +26,52 @@
     }
 
     function scan(con) {
-        $("#suggestions .suggestion").remove();
-        let words = con.split(" ");
-        for (var i = 0; i < words.length; i++) {
-            if (words[i] == "demo")
-                addSuggestion(words, i, "demonstration");
-        }
+        Word.run(function (context) {
+            let sugg = document.getElementById("suggestions");
+            sugg.innerHTML = "";
+
+            let doc = context.document;
+            let words = con.split(" ");
+
+            doc.body.clear();
+
+            for (var i = 0; i < words.length; i++) {
+                if (words[i] == "demo") {
+                    id++;
+                    let _id = id;
+                    sugg.innerHTML += _id;
+                    //addSuggestion(words, i, _id, "demonstration");
+                    addAndBindControl(doc, _id.toString(), "demonstration");
+                    sugg.innerHTML += Office.context.document.bindings;
+                } else
+                    doc.body.insertText(words[i], "End");
+                if (i < words.length - 1)
+                    doc.body.insertText(" ", "End");
+            }
+
+            /*if (sugg.innerHTML == "")
+                sugg.innerHTML = "<span>No suggestions.</span>";
+            else {
+                let lastChild = sugg.children[sugg.children.length - 1];
+                lastChild.style.marginBottom = "0px";
+            }*/
+
+            return context.sync();
+        })
+            .catch(function (error) {
+                console.log("Error: " + error);
+                if (error instanceof OfficeExtension.Error) {
+                    console.log("Debug info: " + JSON.stringify(error.debugInfo));
+                }
+            });
     }
 
-    function addSuggestion(arr, i, sugg) {
+    function addSuggestion(arr, i, _id, sugg) {
         let prev = arr[i];
         var previewing = false;
         var suggestion = document.createElement("div");
         suggestion.className = "suggestion";
+        suggesiont.id = _id;
         suggestion.innerHTML = "<span>" + prev + " -> " + sugg + "</span>";
         let suggestions = $("#suggestions");
         suggestions.append(suggestion);
@@ -57,9 +90,59 @@
         }
     }
 
+    function addAndBindControl(doc, id, initial) {
+        /*
+        var myOOXMLRequest = new XMLHttpRequest();
+        var myXML;
+        myOOXMLRequest.open('GET', 'insertion.xml', false);
+        myOOXMLRequest.send();
+        if (myOOXMLRequest.status === 200) {
+            myXML = myOOXMLRequest.responseText.replace("!#PTH#!", content);
+        }
+        doc.body.insertOoxml(myXML, "End");*/
+        Office.context.document.bindings.addFromNamedItemAsync("suggestion", "text", { id: id }, function (result) {
+            if (result.status == "failed") {
+                if (result.error.message == "The named item does not exist.")
+                    var myOOXMLRequest = new XMLHttpRequest();
+                var myXML;
+                myOOXMLRequest.open('GET', 'content_control.xml', false);
+                myOOXMLRequest.send();
+                if (myOOXMLRequest.status === 200)
+                    myXML = myOOXMLRequest.responseText.replace("!#PTH#!", initial);
+                doc.body.insertOoxml(myXML, "End");
+                //Office.context.document.setSelectedDataAsync(myXML, { coercionType: 'ooxml' }, function (result) {
+                Office.context.document.bindings.addFromNamedItemAsync("suggestion", "text", { id: id });
+                //});
+                populateBinding("insertion.xml", id, "demonstrat");
+            }
+        });
+    }
+
+    function populateBinding(filename, id, content) {
+        var myOOXMLRequest = new XMLHttpRequest();
+        var myXML;
+        myOOXMLRequest.open('GET', filename, false);
+        myOOXMLRequest.send();
+        if (myOOXMLRequest.status === 200) {
+            myXML = myOOXMLRequest.responseText.replace("!#PTH#!", content);
+        }
+        Office.select("bindings#" + id).setDataAsync(myXML, { coercionType: 'ooxml' });
+    }
+
+/* function writeContent() {
+    var myOOXMLRequest = new XMLHttpRequest();
+    var myXML;
+    myOOXMLRequest.open('GET', 'insertion.xml', false);
+    myOOXMLRequest.send();
+    if (myOOXMLRequest.status === 200) {
+        myXML = myOOXMLRequest.responseText;
+    }
+    Office.context.document.setSelectedDataAsync(myXML, { coercionType: 'ooxml' });
+} */
+
     function replace(arr, i, toReplace) {
-        arr[i] = toReplace;
-        let reconstructed = arr.join(" ");
-        Office.context.document.setSelectedDataAsync(reconstructed.substring(0, reconstructed.length - 1));
+        arr[i] = "!r" + id++;
+        //let reconstructed = arr.join(" ");
+        //Office.context.document.setSelectedDataAsync(reconstructed.substring(0, reconstructed.length - 1));
     }
 })();
