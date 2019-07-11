@@ -14,13 +14,13 @@
             <w:pPr>
               <w:spacing w:before="360" w:after="0" w:line="480" w:lineRule="auto"/>
               <w:rPr>
-                <w:color w:val="70AD47" w:themeColor="accent6"/>
+                <w:color w:val="ff0000" w:themeColor="accent1"/>
                 <w:sz w:val="28"/>
               </w:rPr>
             </w:pPr>
             <w:r>
               <w:rPr>
-                <w:color w:val="70AD47" w:themeColor="accent6"/>
+                <w:color w:val="ff0000" w:themeColor="accent1"/>
               </w:rPr>
               <w:t>!#PTH#!</w:t>
             </w:r>

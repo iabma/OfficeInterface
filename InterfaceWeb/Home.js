@@ -39,10 +39,17 @@
                 if (words[i] == "demo") {
                     id++;
                     let _id = id;
-                    sugg.innerHTML += _id;
-                    //addSuggestion(words, i, _id, "demonstration");
-                    addAndBindControl(doc, _id.toString(), "demonstration");
-                    sugg.innerHTML += Office.context.document.bindings;
+                    addSuggestion(words, i, _id, "demonstration");
+                    //addAndBindControl(doc, _id.toString(), "demonstration");
+                    //sugg.innerHTML += Office.context.document.bindings;
+                    /* var myOOXMLRequest = new XMLHttpRequest();
+                    var myXML;
+                    myOOXMLRequest.open('GET', "insertion.xml", false);
+                    myOOXMLRequest.send();
+                    if (myOOXMLRequest.status === 200) {
+                        myXML = myOOXMLRequest.responseText.replace("!#PTH#!", "demonstration");
+                    } */
+                    doc.body.insertText("demonstration", "End");//insertOoxml(myXML, "End");
                 } else
                     doc.body.insertText(words[i], "End");
                 if (i < words.length - 1)
@@ -141,8 +148,8 @@
 } */
 
     function replace(arr, i, toReplace) {
-        arr[i] = "!r" + id++;
-        //let reconstructed = arr.join(" ");
-        //Office.context.document.setSelectedDataAsync(reconstructed.substring(0, reconstructed.length - 1));
+        arr[i] = toReplace;//"!r" + id++;
+        let reconstructed = arr.join(" ");
+        Office.context.document.setSelectedDataAsync(reconstructed.substring(0, reconstructed.length - 1));
     }
 })();
