@@ -1,4 +1,4 @@
-﻿(function () {
+﻿ (function () {
     var content = "";
     console.log("yo")
 
@@ -27,11 +27,20 @@
 
     function scan(con) {
         $("#suggestions .suggestion").remove();
-        let words = con.split(" ");
+        let req = new XMLHttpRequest();
+        req.open("GET", "https://guncolony.com/template?querystring=" + con, true);
+        req.send(null);
+        req.onreadystatechange = function() {
+            if (req.readyState == 4) {
+                let response = JSON.parse(req.responseText);
+                Office.context.document.setSelectedDataAsync(response["suggestion"])
+            }
+        }
+        /*let words = con.split(" ");
         for (var i = 0; i < words.length; i++) {
             if (words[i] == "demo")
                 addSuggestion(words, i, "demonstration");
-        }
+        }*/
     }
 
     function addSuggestion(arr, i, sugg) {
