@@ -30,12 +30,18 @@ function readDocumentContent() {
     });
 }
 
-function scan(con) {
+async function scan(con) {
     $("#suggestions .suggestion").remove();
     //var sim = new SimilarSearch();
     var best = [],
         i = 0;
 
+    let data = await runJasonsBackend(con);
+    data.forEach(datum => {
+        addSuggestion(con, datum["start"], datum["end"], datum["suggestion"])
+    });
+    /* console.log(templates["Hemoglobin"])
+    console.log(natural.LevenshteinDistance(templates["Hemoglobin"][1], con, { search: true }))
     Object.keys(templates).forEach(key => {
         let comp = natural.LevenshteinDistance(templates[key][0], con, { search: true });
         //console.log(comp);
@@ -56,7 +62,7 @@ function scan(con) {
         });
     } else {
         suggestions.innerHTML = "No matches."
-    }
+    } */
     //Office.context.document.setSelectedDataAsync(response["suggestion"])
     /*let words = con.split(" ");
     for (var i = 0; i < words.length; i++) {
@@ -65,7 +71,8 @@ function scan(con) {
     }*/
 }
 
-function addSuggestion(con, prev, sugg) {
+function addSuggestion(con, start, end, sugg) { //con, prev, sugg) {
+    let prev = con.substring(start, end);
     var previewing = false;
     var suggestion = document.createElement("div");
     suggestion.className = "suggestion";
@@ -132,4 +139,17 @@ function readTemplateData() {
             console.log("fep complete.");
         }
     };
+}
+
+async function runJasonsBackend(data) {
+    console.log(data);
+    let returnData;
+    await fetch("https://guncolony.com/template?querystring=" + data)
+        .then(res => {
+            //console.log(res.json());
+            returnData = res.json()
+        }) //)
+        .catch(err => console.error(err))
+    console.log(returnData)
+    return returnData;
 }
